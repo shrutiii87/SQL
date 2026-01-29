@@ -1,0 +1,82 @@
+QUESTION 1:-
+
+CREATE DATABASE company_db;
+
+QUESTION  2:-
+
+CREATE TABLE company(
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(100),
+    department VARCHAR(50),
+    salary DECIMAL(10,2)
+);
+
+QUESTION  3:-
+
+INSERT INTO company(emp_id,emp_name,department,salary)
+VALUES
+(101,'samarth','IT',65500),
+(102,'parth','sales',54100),
+(103,'vedarth','accounts',35800),
+(104,'sidhharth','marketing',41500),
+(105,'hitarth','finance',31000);
+
+SELECT * FROM company;
+SELECT emp_name,salary FROM company;
+SELECT * FROM company WHERE salary>50000;
+
+QUESTION  4:-
+
+INSERT INTO company(emp_id,emp_name,department,salary)
+VALUES
+(106,'arth','HR',51000)
+
+UPDATE company
+SET salary = 80000.00
+WHERE emp_id = 101;
+
+DELETE FROM company WHERE emp_id = 103;
+
+QUESTION  5:-
+
+CREATE TABLE products(
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    category VARCHAR(50),
+    price DECIMAL(10,2),
+    stock_quantity INT
+);
+
+INSERT INTO products(product_id,product_name,category,price,stock_quantity)
+VALUES
+(101,'laptop','electronics',78500,34),
+(102,'tshirt','cloths',540,61),
+(103,'mobile','electronics',56100,25),
+(104,'apple','fruits',50,74),
+(105,'jeans','cloths',1000,41);
+
+QUESTION  6:-
+
+SELECT * FROM products;
+SELECT * FROM products WHERE category = 'electronics';
+SELECT * FROM products WHERE price <= 100;
+
+QUESTION  7:-
+
+UPDATE products
+SET price = price*1.10
+WHERE category = 'cloths'
+
+UPDATE products
+SET stock_quantity = 50
+WHERE product_id = 102;
+
+QUESTION  8:-
+
+DELETE FROM products WHERE product_id = 104;
+
+DELETE FROM products WHERE stock_quantity=25;
+
+
+
+

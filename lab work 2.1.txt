@@ -1,0 +1,167 @@
+QUESTION  :- 1
+
+CREATE TABLE sales (
+    sale_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    category VARCHAR(50),
+    price DECIMAL(10,2),
+    quantity_sold INT,
+    sale_date DATE
+);
+
+INSERT INTO sales(sale_id,product_name,category,price,quantity_sold,sale_date)
+VALUES
+(101,'mobile','electronics',45911,34,'2024-01-03'),
+(102,'socks','clothing',50,24,'2025-12-23'),
+(103,'laptop','electronics',76911,14,'2024-10-28'),
+(104,'tablet','electronics',32543,34,'2024-04-12'),
+(105,'chair','furniture',5250,54,'2025-12-29'),
+(106,'tshirt','clothing',150,13,'2024-09-11'),
+(107,'skirt','clothing',340,46,'2023-01-13'),
+(108,'tea table','furniture',100,87,'2024-05-21'),
+(109,'tv','electronics',52000,40,'2026-12-28'),
+(110,'ac','electronics',87500,34,'2024-11-27');
+
+
+1. SELECT * FROM sales WHERE category = 'electronics';
+2. SELECT * FROM sales WHERE price > 500;
+3. SELECT * FROM sales WHERE product_name > '2024-01-01';
+
+QUESTION  :- 2
+
+1. SELECT category, COUNT(*) AS total_quantity 
+   FROM sales
+   GROUP BY category
+
+2.  SELECT 
+        category, 
+        SUM(quantity_sold) AS 
+    total_quantity_sold 
+    FROM 
+        sales 
+    GROUP BY 
+        category 
+    HAVING 
+        SUM(quantity_sold);
+
+
+QUESTION :- 3
+
+1. SELECT * FROM sales LIMIT 5;
+2. SELECT * FROM sales ORDER BY price DESC LIMIT 3;
+
+QUESTION :- 4
+
+SELECT * FROM sales
+WHERE category = 'clothing' 
+AND price>100;
+
+QUESTION  :- 5
+
+SELECT * FROM sales
+WHERE category='electronics' OR category='furniture';
+
+QUESTION :- 6
+
+1. SELECT * FROM sales WHERE category <> 'clothing';
+2. SELECT * FROM sales WHERE price < 300;
+
+QUESTION :- 7
+
+1. SELECT * FROM sales
+   ORDER BY price ASC;
+
+2. SELECT * FROM sales
+   ORDER BY sale_date DESC;
+
+3.  SELECT * FROM sales
+    ORDER BY category ASC;
+
+    SELECT * FROM sales
+    ORDER BY price DESC;
+
+QUESTION  :- 8
+
+1.  SELECT category,
+    SUM(price * quantity_sold) AS total_revenue
+    FROM sales
+    GROUP BY category;
+
+2.  SELECT category,
+    AVG(price) AS average_price
+    FROM sales
+    GROUP BY category;
+
+3.  SELECT category,AVG(price) AS average_price
+    FROM sales
+    GROUP BY category
+    HAVING AVG(price)>200;
+
+4.  SELECT category,product_name,
+    SUM(quantity_sold)AS total_quantity
+    FROM sales 
+    GROUP BY category,product_name; 
+
+QUESTION  :- 9
+
+1.  SELECT SUM(price*quantity_sold) AS total_revenue
+    FROM sales;
+
+2.  SELECT AVG(price)
+    FROM sales;
+
+3.  SELECT MAX(price),MIN(price)
+    FROM sales;
+
+4.  SELECT product_name, MAX(quantity_sold)AS max_quantity_sold
+    FROM sales;
+
+5.  SELECT COUNT(*)
+    FROM sales;
+
+6.  SELECT COUNT(DISTINCT category)
+    FROM sales;
+
+QUESTION :- 10
+
+1.  SELECT category, SUM(price * quantity_sold)
+    FROM sales
+    GROUP BY category
+    LIMIT 3;
+
+2.  ORDER BY total_revenue DESC
+
+par ise hum combine krke :-
+
+SELECT category, SUM(price * quantity_sold) AS total_revenue
+FROM sales
+GROUP BY category
+ORDER BY total_revenue DESC
+LIMIT 3;
+
+QUESTION  :- 11
+
+SELECT * FROM sales
+WHERE (category = 'electronics' OR category = 'furniture')
+AND price > 200;
+
+QUESTION  :- 12
+
+1.  SELECT sale_date, SUM(price * quantity_sold) 
+    FROM sales
+    GROUP BY sale_date;
+
+2.  SELECT sale_date, SUM(price * quantity_sold) 
+    FROM sales
+    GROUP BY sale_date
+    ORDER BY total_revenue DESC
+    LIMIT 3;
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,115 @@
+QUESTION  1:-
+
+CREATE DATABASE student;
+
+CREATE TABLE students(
+    student_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT,
+    grade VARCHAR(10),
+    email VARCHAR(100)
+);
+
+INSERT INTO students(student_id,name,age,grade,email)
+VALUES
+(1,'Alice',20,'A','alice@example.com'),
+(2,'Bob',22,'B','bob@example.com'),
+(3,'Charlie',21,'A','charlie@example.com');
+
+QUESTION  2:-
+
+CREATE TABLE products(
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    category VARCHAR(30),
+    price DECIMAL(10,2),
+    stock_quantity INT
+);
+
+INSERT INTO products(product_id,product_name,category,price,stock_quantity)
+VALUES
+(1,'laptop','electronics',65000,35),
+(2,'mobile','electronics',45000,75),
+(3,'mango','fruits',80,85),
+(4,'jeans','clothes',450,43),
+(5,'shirt','clothes',200,10);
+
+QUESTION  3:-
+
+SELECT * FROM students;
+
+SELECT name,grade FROM students;
+
+QUESTION 4:-
+
+SELECT * FROM products WHERE category = 'electronics';
+
+SELECT * FROM products WHERE price>500;
+
+QUESTION  5:-
+
+SELECT DISTINCT category FROM products;
+
+QUESTION  6:-
+
+UPDATE students
+SET grade = 'A'
+WHERE student_id = 2;
+
+QUESTION  7:-
+
+UPDATE products
+SET stcok_quantity = 50
+WHERE product_id = 3;
+
+UPDATE products
+SET price = price*1.10
+
+QUESTION  8:-
+
+UPDATE students
+SET email = 'gradeA@example.com'
+WHERE grade = 'A';
+
+QUESTION  9:-
+
+DELETE FROM students WHERE student_id = 3;
+
+QUESTION  10:-
+
+DELETE FROM products WHERE stock_quantity = 10;
+
+QUESTION  11:-
+
+DELETE FROM students WHERE age>21;
+
+QUESTION  12:-
+
+INSERT INTO products
+(product_id,product_name,category,price,stock_quantity)
+VALUES
+(6,'samrtphone','electronics',699.99,20);
+
+UPDATE products
+SET price = 749.99
+WHERE product_id = 6;
+
+DELETE FROM products WHERE product_id = 6;
+
+QUESTION  13:-
+
+ALTER TABLE students ADD COLUMN address VARCHAR(255);
+
+INSERT INTO students(student_id,name,age,grade,email,address)
+VALUES
+(4,'john',23,'B','john@example.com','A1 star colony');
+
+UPDATE students
+SET address = 'unknown'
+WHERE address IS NULL;
+
+DELETE FROM students WHERE grade = 'B';
+
+
+
+
