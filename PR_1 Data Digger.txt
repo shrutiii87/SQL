@@ -1,0 +1,221 @@
+                        --------PR:-1 DATA DIGGER--------
+
+:-used foreign key and primary key
+:-used SUM() MAX() MIN() AVG() COUNT
+:-used GROUP BY and AND and BETWEEN
+
+------------------------------------------
+1:- CUSTOMER TABLE
+------------------------------------------
+
+CREATE TABLE customer_table (
+    customer_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    email VARCHAR(100),
+    address VARCHAR(100)
+);
+
+QUERIES TO PERFORM :-
+
+1 :- Insert at least 5 customers into the customer table ?
+
+INSERT INTO customer_table (customer_id, name, email, address) 
+VALUES
+(101, 'Alice', 'alice@gmail.com', 'Adarsh Colony'),
+(102, 'Samarth', 'samarth@gmail.com', 'Vidya Society'),
+(103, 'Siddharth', 'siddharth@gmail.com', 'Sadguru Apartments'),
+(104, 'Vedarth', 'vedarth@gmail.com', 'Skyline Heights'),
+(105, 'Hetarth', 'hetarth@gmail.com', 'Shabrivatika Apartments');
+
+2:- Retrieve all customers details ?
+
+SELECT * FROM customer_table;
+
+3:- Update a customer address ?
+
+UPDATE customer_table
+SET address = 'Agman Residency'
+WHERE customer_id = 102;
+
+4:- Delete a customer using their customerid ?
+
+DELETE FROM customer_table
+WHERE customer_id = 103;
+
+5:- Display all customers whose name is 'Alice' ?
+
+SELECT * FROM customer_table
+WHERE name = 'Alice';
+
+------------------------------------------
+2:- ORDERS TABLE
+------------------------------------------
+
+CREATE TABLE orders_table (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE,
+    total_amount DECIMAL(10,2),
+    FOREIGN KEY (customer_id) REFERENCES customer_table(customer_id)
+);
+
+QUERIES TO PERFORM :-
+
+
+1:- Insert at least 5 sample orders into the orders table ?
+
+INSERT INTO orders_table (order_id, customer_id, order_date, total_amount) 
+VALUES
+(111, 101, '2024-12-12', 35550),
+(222, 102, '2024-10-09', 44810),
+(333, 101, '2025-01-05', 12500),
+(444, 104, '2024-11-09', 75110),
+(555, 105, '2025-12-22', 24540);
+
+2:- Retrieve all orders made by a specific customer ?
+
+SELECT * FROM orders_table
+WHERE customer_id = 102;
+
+3:- Update an order's total amount ?
+
+UPDATE orders_table
+SET total_amount = 90000
+WHERE order_id = 111;
+
+4:- Delete an order using its orderid ?
+
+DELETE FROM orders_table
+WHERE order_id = 444;
+
+5:- Retrieve Orders placed in the last 30 days ?
+
+SELECT * FROM orders_table
+WHERE order_date BETWEEN '2025-12-01' AND '2025-12-31';
+
+6:- Retrieve the heighest, lowest, and average order amount using Aggregate functions ?
+
+(1):- HIGHEST
+
+SELECT MAX(total_amount)
+FROM orders_table;
+
+(2):- LOWEST
+
+SELECT MIN(total_amount)
+FROM orders_table;
+
+(3):- AVERAGE
+
+SELECT AVG(total_amount)
+FROM orders_table;
+
+------------------------------------------
+3:- PRODUCTS TABLE
+------------------------------------------
+
+CREATE TABLE products_table (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(50),
+    price DECIMAL(10,2),
+    stock INT
+);
+
+QUERIES TO PERFORM :-
+
+1:- Insert at least 5 sample products into the products table ?
+
+INSERT INTO products_table (product_id, product_name, price, stock) 
+VALUES
+(110, 'Earbuds', 5450, 19),
+(120, 'Mobile', 56600, 87),
+(130, 'TV', 35900, 4),
+(140, 'Washing Machine', 13234, 0),
+(150, 'Grinder', 1500, 25);
+
+2:- Retrieve all products sorted by price in descending order ?
+
+SELECT * FROM products_table
+ORDER BY price DESC;
+
+3:- Update the price of a specific product ?
+
+UPDATE products_table
+SET price = 67000
+WHERE product_id = 130;
+
+4:- Delete a product if it is out of stock ?
+
+DELETE FROM products_table
+WHERE stock = 0;
+
+5:- Retrieve Products whose price is between ₹500 and ₹2000 ?
+
+SELECT * FROM products_table
+WHERE price BETWEEN 500 AND 2000;
+
+6:- Retrieve the Most expensive and cheapest products using MAX() and MIN() ?
+
+MOST EXPENSIVE:-
+
+SELECT MAX(price) AS most_expensive
+FROM products_table;
+
+MOST CHEAPEST:-
+
+SELECT MIN(price) AS most_cheapest
+FROM products_table;
+
+------------------------------------------
+4:- ORDER DETAILS TABLE
+------------------------------------------
+
+CREATE TABLE orderdetails_table (
+    orderdetail_id INT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    subtotal DECIMAL(10,2),
+    FOREIGN KEY (order_id) REFERENCES orders_table(order_id),
+    FOREIGN KEY (product_id) REFERENCES products_table(product_id)
+);
+
+QUERIES TO PERFORM :-
+
+1:- Insert at least 5 sample records into the orderdetails table ?
+
+INSERT INTO orderdetails_table (orderdetail_id, order_id, product_id, quantity, subtotal) 
+VALUES
+(1, 111, 110, 2, 10900),
+(2, 111, 150, 1, 1500),
+(3, 222, 120, 1, 56600),
+(4, 333, 130, 1, 67000),
+(5, 555, 150, 3, 4500);
+
+2:- Retrieve all order details for a specific order ?
+
+SELECT * FROM orderdetails_table
+WHERE order_id = 111;
+
+3:- calculate the Total revenue generated from all orders using SUM() ?
+
+SELECT SUM(subtotal)
+FROM orderdetails_table;
+
+4:- Retrieve the Top 3 most ordered products ?
+
+SELECT product_id, SUM(quantity) 
+FROM orderdetails_table
+GROUP BY product_id
+HAVING SUM(quantity)> 1
+LIMIT 3;
+
+5:- Count how many times a specific product has been sold using COUNT() ?
+
+SELECT product_id, COUNT(*) 
+FROM orderdetails_table
+WHERE product_id = 150
+GROUP BY product_id;
+
+
+                                 
