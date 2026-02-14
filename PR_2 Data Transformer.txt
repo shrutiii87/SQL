@@ -1,0 +1,192 @@
+                            --------PR:-2 DATA TRANSFORMER--------
+
+
+CREATING CUSTOMERS TABLE---------
+
+(1):- 
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    RegistrationDate DATE
+);
+
+INSERT INTO Customers VALUES
+(1,'John','Doe','john.doe@email.com','2022-03-15'),
+(2,'Jane','Smith','jane.smith@email.com','2021-11-02'),
+(3,'Michael','Brown','michael.b@email.com','2023-01-10'),
+(4,'Emily','Davis','emily.d@email.com','2022-07-21'),
+(5,'David','Wilson','david.w@email.com','2023-05-05');
+
+CREATING ORDERS TABLE---------
+
+(2):- 
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10,2)
+);
+
+INSERT INTO Orders VALUES
+(101,1,'2023-07-01',150.50),
+(102,2,'2023-07-03',200.75),
+(103,3,'2023-07-05',750.00),
+(104,1,'2023-07-08',1200.00),
+(105,4,'2023-07-10',500.00);
+
+CREATING EMPLOYEES TABLE---------
+
+(3):- 
+
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Department VARCHAR(50),
+    HireDate DATE,
+    Salary DECIMAL(10,2)
+);
+
+INSERT INTO Employees VALUES
+(1,'Mark','Johnson','Sales','2020-01-15',50000.00),
+(2,'Susan','Lee','HR','2021-03-20',55000.00),
+(3,'Robert','King','IT','2019-06-11',65000.00),
+(4,'Linda','Taylor','Finance','2022-02-18',48000.00),
+(5,'James','White','Sales','2020-09-25',52000.00);
+
+---------------------------------------------
+QUERIES TO PERFORM :-
+---------------------------------------------
+
+--------(1)
+
+SELECT O.OrderID, C.FirstName, C.LastName, O.TotalAmount
+FROM Orders O
+INNER JOIN Customers C
+ON O.CustomerID = C.CustomerID;
+
+--------(2)
+
+SELECT C.FirstName, C.LastName, O.OrderID
+FROM Customers C
+LEFT JOIN Orders O
+ON C.CustomerID = O.CustomerID;
+
+--------(3)
+
+SELECT O.OrderID, C.FirstName, C.LastName
+FROM Customers C
+RIGHT JOIN Orders O
+ON C.CustomerID = O.CustomerID;
+
+--------(4)
+
+SELECT C.CustomerID, C.FirstName, O.OrderID
+FROM Customers C
+LEFT JOIN Orders O
+ON C.CustomerID = O.CustomerID
+
+UNION
+
+SELECT C.CustomerID, C.FirstName, O.OrderID
+FROM Customers C
+RIGHT JOIN Orders O
+ON C.CustomerID = O.CustomerID;
+
+--------(5)
+
+SELECT * 
+FROM Customers
+WHERE CustomerID IN (
+    SELECT CustomerID FROM Orders
+    WHERE TotalAmount > (SELECT AVG(TotalAmount) FROM Orders)
+);
+
+--------(6)
+
+SELECT * 
+FROM Employees
+WHERE Salary > (SELECT AVG(Salary) FROM Employees);
+
+--------(7)
+
+SELECT OrderID,
+       YEAR(OrderDate) AS OrderYear,
+       MONTH(OrderDate) AS OrderMonth
+FROM Orders;
+
+--------(8)
+
+SELECT OrderID,
+       DATEDIFF(CURDATE(), OrderDate) AS DaysDifference
+FROM Orders;
+
+--------(9)
+
+SELECT OrderID,
+       DATE_FORMAT(OrderDate,'%d-%m-%Y') AS FormattedDate
+FROM Orders;
+
+--------(10)
+
+SELECT CONCAT(FirstName,' ',LastName) AS FullName
+FROM Customers;
+
+--------(11)
+
+SELECT REPLACE(FirstName,'John','Jonathan')
+FROM Customers;
+
+--------(12)
+
+SELECT UPPER(FirstName), LOWER(LastName)
+FROM Customers;
+
+--------(13)
+
+SELECT TRIM(Email)
+FROM Customers;
+
+(no space . so same output show )
+
+--------(14)
+
+SELECT OrderID,
+TotalAmount,
+SUM(TotalAmount) OVER (ORDER BY OrderDate) AS RunningTotal
+FROM Orders;
+
+--------(15)
+
+SELECT OrderID,
+TotalAmount,
+RANK() OVER (ORDER BY TotalAmount DESC) AS RankNo
+FROM Orders;
+
+--------(16)
+
+SELECT OrderID, TotalAmount,
+CASE
+    WHEN TotalAmount > 2000 THEN '10% off'
+    WHEN TotalAmount > 1000 THEN '5% off'
+    ELSE 'No Discount'
+END AS DiscountsApplied
+FROM orders;
+
+--------(17)
+
+SELECT FirstName,Salary,
+CASE
+    WHEN Salary >= 60000 THEN 'High'
+    WHEN Salary >= 50000 THEN 'Medium'
+ELSE 'Low'
+END AS SalaryCategory
+FROM Employees;
+
+
+
+
