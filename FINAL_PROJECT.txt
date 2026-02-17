@@ -1,0 +1,357 @@
+                          ----------UNIVERSITY COURSE MANAGEMENT SYSTEM----------
+
+-------------------------
+CREATE TABLES:-
+-------------------------
+
+1️⃣ Students Table :-
+
+CREATE TABLE student(
+    student_ID INT PRIMARY KEY,
+    First_name VARCHAR(50),
+    Last_name VARCHAR(50),
+    Email VARCHAR(50),
+    Birth_Date DATE,
+    Enrollment_Date DATE
+);
+
+INSERT INTO student 
+VALUES 
+(1, 'Arjun', 'Mehta', 'arjun.mehta@email.com', '2004-02-14', '2023-07-10'),
+(2, 'Priya', 'Sharma', 'priya.sharma@email.com', '2005-06-21', '2023-07-12'),
+(3, 'Karan', 'Patel', 'karan.p@email.com', '2003-12-05', '2022-08-01'),
+(4, 'Sneha', 'Rao', 'sneha.rao@email.com', '2004-09-18', '2024-01-15'),
+(5, 'Aditya', 'Verma', 'aditya.v@email.com', '2005-03-30', '2023-07-10');
+
+2️⃣ Courses Table :-
+
+CREATE TABLE courses(
+    course_ID INT PRIMARY KEY,
+    course_name VARCHAR(50),
+    department_ID INT,
+    credits INT,
+    FOREIGN KEY (department_ID) REFERENCES departments (department_ID)
+);
+
+INSERT INTO courses (course_ID, course_name, department_ID, credits)
+VALUES 
+(1, 'Introduction to SQL', 2, 1),
+(2, 'Data Structures', 2, 3),
+(3, 'Machine Learning', 2, 4),
+(4, 'Business Economics', 4, 3),
+(5, 'Thermodynamics', 5, 4);
+
+3️⃣ Instructors Table :-
+
+CREATE TABLE instructors (
+    instructor_ID INT PRIMARY KEY,
+    First_Name VARCHAR(50),
+    Last_Name VARCHAR(50),
+    Email VARCHAR(50),
+    department_ID INT,
+    FOREIGN KEY (department_ID) REFERENCES departments (department_ID)
+);
+
+INSERT INTO instructors
+VALUES 
+(1, 'Rahul', 'Nair', 'rahul.nair@university.edu', 1),
+(2, 'Meena', 'Kapoor', 'meena.kapoor@university.edu', 2),
+(3, 'Sanjay', 'Iyer', 'sanjay.iyer@university.edu', 3),
+(4, 'Pooja', 'Malhotra', 'pooja.m@university.edu', 4),
+(5, 'Vivek', 'Desai', 'vivek.desai@university.edu', 5);
+
+4️⃣ Enrollments Table :-
+
+CREATE TABLE enrollments(
+    enrollment_ID INT PRIMARY KEY,
+    student_ID INT,
+    course_ID INT,
+    enrollment_Date DATE,
+    FOREIGN KEY (student_ID) REFERENCES student (student_ID),
+    FOREIGN KEY (course_ID) REFERENCES courses (course_ID)
+);
+
+INSERT INTO enrollments (enrollment_ID, student_ID, course_ID, enrollment_Date)
+VALUES 
+(201, 1, 1, '2023-07-10'),
+(202, 2, 2, '2023-07-12'),
+(203, 3, 3, '2022-08-01'),
+(204, 4, 4, '2024-01-15'),
+(205, 5, 5, '2023-07-10');
+
+5️⃣ Department Table :-
+
+CREATE TABLE departments(
+    department_ID INT PRIMARY KEY,
+    department_name VARCHAR(50)
+);
+
+INSERT INTO departments (department_ID, department_name)
+VALUES 
+(1, 'Computer Science'),
+(2, 'Mathematics'),
+(3, 'Artificial Intelligence'),
+(4, 'Commerce'),
+(5, 'Mechanical Engineering');
+
+-------------------------------------------------------------------------------------
+
+                                ----QUERIES TO PERFORM----
+
+-----------------------------------
+QUESTION :- 1
+-----------------------------------
+
+perform CRUD operation on all tables:-
+
+------ insert is already done above------
+
+ON 1ST TABLE:-
+
+(1) READ
+
+SELECT * FROM student;
+
+(1) UPDATE
+
+UPDATE student
+SET Email = 'arjun.bhawsar@email.com'
+WHERE student_ID = 1;
+
+(1) DELETE
+
+DELETE FROM student
+WHERE student_ID = 5;
+
+ON 2ND TABLE:-
+
+(2) READ
+
+SELECT * FROM courses;
+
+(2) UPDATE
+
+UPDATE courses
+SET credits = 4
+WHERE course_ID = 1;
+
+(2) DELETE
+
+DELETE FROM courses
+WHERE course_ID = 5;
+
+ON 3RD TABLE:-
+
+(3) READ
+
+SELECT * FROM instructors;
+
+(3) UPDATE
+
+UPDATE instructors
+SET Email = 'rahul.wakde@university.edu'
+WHERE instructor_ID = 1;
+
+(3) DELETE
+
+DELETE FROM instructors
+WHERE instructor_ID = 5;
+
+ON 4TH TABLE:-
+
+(4) READ
+
+SELECT * FROM enrollments;
+
+(4) UPDATE
+
+UPDATE enrollments
+SET enrollment_Date = '2023-08-01'
+WHERE enrollment_ID = 201;
+
+(4) DELETE
+
+DELETE FROM enrollments
+WHERE enrollment_ID = 205;
+
+ON 5TH TABLE:-
+
+(5) READ
+
+SELECT * FROM departments;
+
+(5) UPDATE
+
+UPDATE departments
+SET department_name = 'CS'
+WHERE department_ID = 1;
+
+(5) DELETE
+
+DELETE FROM departments
+WHERE department_ID = 5;
+
+-----------------------------------
+QUESTION :- 2
+-----------------------------------
+
+SELECT *
+FROM student
+WHERE Enrollment_Date > '2022-12-31';
+
+-----------------------------------
+QUESTION :- 3
+-----------------------------------
+
+SELECT c.*
+FROM courses c
+JOIN departments d 
+ON c.department_ID = d.department_ID
+WHERE d.department_name = 'Mathematics'
+LIMIT 5;
+
+-----------------------------------
+QUESTION :- 4
+-----------------------------------
+
+SELECT course_ID ,
+COUNT(student_ID) AS number_of_student
+FROM enrollments
+GROUP BY course_ID
+
+HAVING COUNT(student_ID) >5;
+
+-----------------------------------
+QUESTION :- 5
+-----------------------------------
+
+SELECT s.student_ID, s.First_name
+FROM student s
+JOIN enrollments e
+ON s.student_ID = e.student_ID
+
+JOIN courses c 
+ON e.course_ID = c.course_ID
+
+WHERE c.course_name IN ('Introduction to SQL', 'Data Structures')
+GROUP BY s.student_ID, s.First_name
+HAVING COUNT(DISTINCT c.course_name) = 2;
+
+-----------------------------------
+QUESTION :- 6
+-----------------------------------
+
+SELECT DISTINCT s.*
+FROM student s
+JOIN enrollments e ON s.student_ID = e.student_ID
+JOIN courses c ON e.course_ID = c.course_ID
+WHERE c.course_name IN ('Introduction to SQL', 'Data Structures');
+
+-----------------------------------
+QUESTION :- 7
+-----------------------------------
+
+SELECT AVG(credits) AS average_credits
+FROM courses;
+
+-----------------------------------
+QUESTION :- 8
+-----------------------------------
+
+ALTER TABLE instructors
+ADD COLUMN Salary INT;
+
+SELECT instructor_ID, MAX(Salary)
+FROM instructors i
+JOIN departments d
+ON i.department_ID = d.department_ID
+
+WHERE d.department_name = 'Computer Science' ;
+
+-----------------------------------
+QUESTION :- 9
+-----------------------------------
+
+SELECT d.department_name,
+COUNT(e.student_ID) AS count_no_of_stud
+
+FROM departments d
+JOIN courses c
+ON c.course_ID = c.department_ID
+
+JOIN enrollments e
+ON c.course_ID = e.course_ID
+
+GROUP BY d.department_name ;
+
+-----------------------------------
+QUESTION :- 10
+-----------------------------------
+
+SELECT s.First_name, s.Last_name, c.course_name
+FROM student s
+INNER JOIN enrollments e ON s.student_ID = e.student_ID
+INNER JOIN courses c ON e.course_ID = c.course_ID;
+
+-----------------------------------
+QUESTION :- 11
+-----------------------------------
+
+SELECT s.First_name, s.Last_name, c.course_name
+FROM student s
+LEFT JOIN enrollments e ON s.student_ID = e.student_ID
+LEFT JOIN courses c ON e.course_ID = c.course_ID;
+
+-----------------------------------
+QUESTION :- 12
+-----------------------------------
+
+SELECT DISTINCT s.*
+FROM student s
+JOIN enrollments e1 
+ON s.student_ID = e1.student_ID
+WHERE e1.course_ID IN (
+    SELECT course_ID
+    FROM enrollments
+    GROUP BY course_ID
+    HAVING COUNT(student_ID) >= 3
+);
+
+-----------------------------------
+QUESTION :- 13
+-----------------------------------
+
+SELECT student_ID, YEAR(Enrollment_Date) AS enrollment_year
+FROM student;
+
+-----------------------------------
+QUESTION :- 14
+-----------------------------------
+
+SELECT CONCAT(First_Name, ' ', Last_Name) AS Full_Name
+FROM instructors;
+
+-----------------------------------
+QUESTION :- 15
+-----------------------------------
+
+SELECT course_ID,
+       COUNT(student_ID) AS total_students,
+       SUM(COUNT(student_ID)) OVER (ORDER BY course_ID) AS running_total
+FROM enrollments
+GROUP BY course_ID;
+
+-----------------------------------
+QUESTION :- 16
+-----------------------------------
+
+SELECT student_ID,
+CASE 
+    WHEN Enrollment_Date <= DATE_SUB(CURDATE(), INTERVAL 4 YEAR)
+    THEN 'Senior'
+    ELSE 'Junior'
+END AS status
+FROM student;
+
+
+
